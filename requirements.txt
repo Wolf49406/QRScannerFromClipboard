@@ -1,0 +1,4 @@
+Pillow
+pyzbar
+pyperclip
+pystray
