@@ -1,11 +1,12 @@
 import time
 import webbrowser
+import pyperclip
 from PIL import ImageGrab, Image
 from pyzbar.pyzbar import decode
 import re
 import pystray
 from pystray import MenuItem as item
-from PIL import Image as PilImage  # Избегаем конфликта имен
+from PIL import Image as PilImage
 import threading
 
 def get_qr_code_from_clipboard():
@@ -26,23 +27,21 @@ def scan_qr_code():
 
         if result and result != last_result:
             if url_pattern.match(result):
+                pyperclip.copy(result)
                 webbrowser.open(result)
             last_result = result
 
 def quit_app(icon, item):
-    icon.stop()  # Закрытие иконки в трее и завершение программы
+    icon.stop()
 
 def main():
-    # Настройка иконки для трея
-    image = PilImage.open("qr_scanner.ico") # Иконка
+    image = PilImage.open("qr_scanner.ico")
     icon = pystray.Icon("QR Code Scanner", image, title="QRScannerFromClipboard", menu=pystray.Menu(
-        item('Exit', quit_app)  # Добавление пункта меню для выхода
+        item('Exit', quit_app)
     ))
 
-    # Запускаем сканер QR-кодов в отдельном потоке
     threading.Thread(target=scan_qr_code, daemon=True).start()
 
-    # Отображение иконки в трее
     icon.run()
 
 if __name__ == "__main__":
