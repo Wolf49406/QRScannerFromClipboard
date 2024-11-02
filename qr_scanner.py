@@ -35,7 +35,7 @@ def quit_app(icon, item):
 def main():
     # Настройка иконки для трея
     image = PilImage.open("qr_scanner.ico") # Иконка
-    icon = pystray.Icon("QR Code Scanner", image, menu=pystray.Menu(
+    icon = pystray.Icon("QR Code Scanner", image, title="QRScannerFromClipboard", menu=pystray.Menu(
         item('Exit', quit_app)  # Добавление пункта меню для выхода
     ))
 
